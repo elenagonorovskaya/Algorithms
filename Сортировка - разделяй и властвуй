@@ -1,0 +1,56 @@
+# Сортировка массива методом разделяй и властвуй 
+A = []
+with open('input.txt', 'r') as f:
+    for line in f:
+        k = line.split('\n')
+        A.append(int(k[0]))
+
+print(A)
+
+def Merge(C, D):
+    print('вызывается merge C =', C, '\n D=', D)
+    n = len(C) + len(D)
+    print('n =', n)
+    i = 0
+    j = 0
+    B = []
+    for k in range(0, n):
+        if i < len(C) and j < len(D) and C[i] < D[j]:
+            print('условие 1')
+            print(C[i], ' ', D[j], ' bool: ', C[i] < D[j])
+            B.append(C[i])
+            i += 1
+        elif i < len(C) and j < len(D) and C[i] >= D[j]:
+            print('условие 2')
+            B.append(D[j])
+            j += 1
+        elif i == len(C) and j < len(D):
+            print('условие 3')
+            B.append(D[j])
+            j += 1
+        elif j == len(D) and i < len(C):
+            print('условие 4')
+            B.append(C[i])
+            i += 1
+    return B
+
+
+def Sort(A):
+    print('вызывается sort', A)
+    n = len(A)
+    s = int(n/2)
+    if n == 0 or n == 1:
+        return A
+    C = A[:s]
+    D = A[s:]
+    print('C = ', C)
+    print('D = ', D)
+    C_sort = Sort(C)
+    D_sort = Sort(D)
+    res = Merge(C_sort, D_sort)
+    print('возвращает merge ', res)
+    return res
+
+print('Результат')
+print(Sort(A))
+
