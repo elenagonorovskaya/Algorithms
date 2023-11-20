@@ -1,0 +1,73 @@
+# Подсчет инверсий и сортировка массива методом разделяй и властвуй (инверсия - это числа не по порядку/не по возрастанию в данном случае)
+# Время работы n log n
+# Aa = input()
+# n = len(Aa)
+# s = int(n/2)
+# print(Aa[:s])
+A = []
+with open('input.txt', 'r') as f:
+    for line in f:
+        k = line.split('\n')
+        A.append(int(k[0]))
+
+print(A)
+def Sort_CountInv(A):
+    #print('Sort_count', A)
+    n = len(A)
+    #print('n ', n)
+    s = int(n/2)
+    #print('s ', s)
+    if n == 0 or n == 1:
+        #print('возвращаем', A, ' ', 0)
+        return (A, 0)
+    else:
+        C = A[:s]
+        #print('C = ', C)
+        D = A[s:]
+        #print('D = ', D)
+        (C_sort, left) = Sort_CountInv(C)
+        (D_sort, right) = Sort_CountInv(D)
+        (B, betw) = Sort_Merge_CountSplit(C_sort, D_sort)
+        #print('возвращаем ', A, ' ', left+right+betw)
+        return (B, left+right+betw)
+
+
+def Sort_Merge_CountSplit(C, D):
+    n = len(C) + len(D)
+    #print('Merge ', A)
+    #print('len A = ', n)
+    #print('C ', C)
+    #print('D ', D)
+    B = []
+    i = 0
+    j = 0
+    count_inv = 0
+    for k in range(0, n):
+        #print('выполняем цикл ', k)
+        if i < len(C) and j < len(D) and int(C[i]) < int(D[j]):
+            B.append(C[i])
+            i += 1
+        elif i < len(C) and j < len(D) and int(C[i]) >= int(D[j]):
+            #print('выполняем 2 ')
+            B.append(D[j])
+            #print('добавляем ', D[j])
+            count_inv += int(n/2 - i)
+            #print('inversia ', count_inv)
+            j += 1
+        elif i == len(C):
+            #print('выполняем 3 ')
+            B.append(D[j])
+            count_inv += int(n / 2 - i)
+            j += 1
+        elif j == len(D):
+            #print('выполняем 4 ')
+            B.append(C[i])
+            #print('добавляем ', C[i])
+            i += 1
+
+    return (B, count_inv)
+
+
+print(Sort_CountInv(A))
+
+
