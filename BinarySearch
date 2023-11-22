@@ -1,0 +1,23 @@
+#бинарный поиск за log n в отсортированном массиве возвращает индекс найденного элемента или -1, если не находит
+#метод разделяй и властвуй
+x = int(input())
+A = list(map(int, input().split()))
+
+def BinarySearch(x, A):
+    n = len(A)
+    start = 0
+    end = n - 1
+    while start <= end:
+        #print('start ', start)
+        #print('end ', start)
+        middle = int((end + start) / 2)
+        if A[middle] == x:
+            return middle
+        elif x > A[middle]:
+            start = middle + 1
+        else:
+            end = middle - 1
+    return -1
+
+
+print(BinarySearch(x, A))
