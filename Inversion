@@ -44,10 +44,10 @@ def Sort_Merge_CountSplit(C, D):
     count_inv = 0
     for k in range(0, n):
         #print('выполняем цикл ', k)
-        if i < len(C) and j < len(D) and int(C[i]) < int(D[j]):
+        if i < len(C) and j < len(D) and int(C[i]) <= int(D[j]):
             B.append(C[i])
             i += 1
-        elif i < len(C) and j < len(D) and int(C[i]) >= int(D[j]):
+        elif i < len(C) and j < len(D) and int(C[i]) > int(D[j]):
             #print('выполняем 2 ')
             B.append(D[j])
             #print('добавляем ', D[j])
