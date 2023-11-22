@@ -1,0 +1,42 @@
+#нахождение второго элемента по величине. элементы массива - степень двойки. надо было за время n + log n + 2, но получилось вроде за n + log n + const
+def func(A):
+    print('-')
+    n = len(A)
+    s = int(n / 2)
+    c1 = 0
+    c2 = 0
+    d1 = 0
+    d2 = 0
+    max1 = 0
+    max2 = 0
+    if n == 0:
+        return -1, -1
+    elif n == 1:
+        return A[0], -1
+    elif n == 2:
+        print('base')
+        if A[0] > A[1]:
+            return A[0], A[1]
+        else:
+            return A[1], A[0]
+    c = A[:s]
+    d = A[s:]
+    c1, c2 = func(c)
+    d1, d2 = func(d)
+    if c1 > d1 and c2 > d1:
+        max2 = c2
+        max1 = c1
+    if c1 > d1 and d1 > c2:
+        max2 = d1
+        max1 = c1
+    if d1 > c1 and d2 > c1:
+        max2 = d2
+        max1 = d1
+    if d1 > c1 and c1 > d2:
+        max2 = c1
+        max1 = d1
+    return max1, max2
+
+
+A = list(map(int, input().split()))
+print(func(A))
