@@ -1,0 +1,17 @@
+#возведение x в степень n (n может быть <= 0) методом разделяй и властвуй
+def myPow(x, n) -> float:
+        if x == 0:
+            return 0
+        if n == 0:
+            return 1
+        if n < 0:
+            n = - n
+            x = 1 / x
+        if n == 1:
+            return x
+        xx = x * x
+        ans = myPow(xx, int(n / 2))
+        if n % 2 == 0:
+            return ans
+        else:
+            return x * ans
