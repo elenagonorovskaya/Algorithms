@@ -1,0 +1,93 @@
+#быстрая сортировка с разным выбором опорного элемента (в т.ч. медиану из трех). Средняя скорость выполнения n log n (максимальная скорость выполнения n^2)
+#алгоритм подсчитывает количество сравнений
+# A = list(map(int, input().split()))
+# n = len(A)
+from random import randint
+A = []
+with open('input.txt', 'r') as f:
+    for line in f:
+        k = line.split('\n')
+        A.append(int(k[0]))
+
+def Partition(A, l, r):
+    # print('Partition l=', l, ' r=', r )
+    # print('массив А сейчас такой - ', A)
+    p = A[l]
+    # print('p= ', p)
+    i = l + 1
+    for j in range(l + 1, r + 1):
+        if A[j] < p:
+            # print('i= ', i, ' j= ', j)
+            # print('меняем местами ', A[j], ' и ', A[i])
+            A[j], A[i] = A[i], A[j]
+            i += 1
+            # print('i= ', i, ' j= ', j)
+
+    A[l], A[i-1] = A[i-1], A[l]
+
+    return i-1
+
+#выбирает опорный элемент
+def ChoosePivot(A, l, r):
+    ans = 0
+    n = r - l + 1
+    if n == 1:
+        return l
+    elif n == 2:
+        if A[l] > A[r]:
+            return r
+        else:
+            return l
+    else:
+        if n % 2 == 0:
+            middle = int(n / 2)  # выбираем в четном 2k массиве k-й элемент как опорный
+        else:
+            middle = int(n / 2) +1
+        m = l + middle - 1
+
+        if A[l] > A[m] and A[l] > A[r]:
+            if A[m] > A[r]:
+                ans = m
+            else:
+                ans = r
+        elif A[r] > A[m] and A[r] > A[l]:
+            if A[m] > A[l]:
+                ans = m
+            else:
+                ans = l
+        elif A[m] > A[l] and A[m] > A[r]:
+            if A[l] > A[r]:
+                ans = l
+            else:
+                ans = r
+        else:
+            print(A[l], A[m], A[r], l, m, r)
+
+    return ans
+    #return randint(l, r) #рандомные числа от l о r включительно. получилось 168946 > 162085 для алгоритма с выбором первого элемента
+
+
+def QuickSort(A, l, r) -> int:
+    # print('сортировка ', l, ' ', r)
+    # print('массив А сейчас такой - ', A)
+    if l >= r:
+        return 0
+    c = r - l
+    # print(' длина рассматриваемого массива ', c)
+    i = ChoosePivot(A, l, r) #выбираем опорный элемент
+    # print('выбрали опорный элемент ', i)
+    A[i], A[l] = A[l], A[i] #делаем опорный элемент первым
+    j = Partition(A, l, r) #разделяет и выдает индекс опорного элемента
+    # print('индекс опорного элемента окончательный враиант ', j)
+    c1 = QuickSort(A, l, j-1)
+    c2 = QuickSort(A, j+1, r)
+
+    # print(c1)
+    # print(c2)
+    # print('возвращается с +с1 + с2', c, c1, c2)
+    return c + c1 + c2
+
+
+count = QuickSort(A, 0, len(A)-1)
+print(A)
+print(count)
