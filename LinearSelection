@@ -1,0 +1,49 @@
+#Линейный поиск. Находим наименьший i-й элемент в неотсортированном массиве с неповторяющимися числами (можно находить мин макс медиану и т.д.) Среднее время работы O(n)
+from random import randint
+A = []
+with open('input.txt', 'r') as f:
+    for line in f:
+        k = line.split('\n')
+        A.append(int(k[0]))
+
+def Partition(A, l, r):
+    p = A[l]
+    i = l + 1
+    for j in range(l + 1, r + 1):
+        if A[j] < p:
+            A[j], A[i] = A[i], A[j]
+            i += 1
+    A[l], A[i-1] = A[i-1], A[l]
+    return i-1
+
+#выбирает опорный элемент
+def ChoosePivot(A, l, r):
+    return randint(l, r)
+
+#i - номер элемента в отсортированном массиве, который нужно вывести
+def RSelect(A, l, r, i) -> int:
+    n = r - l + 1
+
+    if l == r:
+        return A[0]
+
+    p = ChoosePivot(A, l, r) #выбираем значение опорного элемента в новом массиве
+    A[p], A[l] = A[l], A[p]
+    j = Partition(A, l, r) #разделяет и выдает индекс опорного элемента
+
+    if n >= 1:
+        if i == j:
+            return A[j]
+        elif i < j:
+            A1 = A[:j] #копирует не включая A[j]
+            x = RSelect(A1, 0, len(A1) - 1, i)
+        else:
+            A2 = A[j+1:]
+            x = RSelect(A2, 0, len(A2) - 1, i - j - 1)
+        return x
+
+
+
+i = 50 #наименьший i-й элемент, который необходимо найти в неотсортированном массиве
+count = RSelect(A, 0, len(A) - 1, i-1)
+print(count)
