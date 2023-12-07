@@ -1,0 +1,21 @@
+#Поиск в ширину O(n+m), n - колчисевто вершин, m - количество ребер
+#Будем искать в какие вершины можно попасть из заданной вершины i
+from collections import deque
+n = int(input())
+A = []
+for i in range(0, n):
+    A.append(list(map(int, input().split())))
+
+s = int(input())
+explored = [] #разведанные вершины
+q = deque() #создаем очередь для обработки неразведанных вершин
+q.append(s) #добавляем в конец
+while len(q) > 0:
+    ex = q[0] #берем элемент с начала
+    q.popleft() #удаляем первый элемент
+    if explored.count(ex) == 0:
+        explored.append(ex)
+        for j in A[ex]: #проходимся по каждой вершине
+            q.append(j)
+print('Вершины, связанные с ', s, ' :', explored)
+
